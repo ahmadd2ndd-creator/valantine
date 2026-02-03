@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Valentine 💕</title>
+
+<!-- Elegant Handwritten Font -->
+<link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet">
+
+<style>
+/* ---------------- BODY & PAGES ---------------- */
+body {
+  margin: 0;
+  font-family: 'Sacramento', cursive;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ffd1dc, #ffe6f0);
+}
+
+.page {
+  display: none;
+  height: 100vh;
+  width: 100vw;
+}
+
+.active {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* ---------------- TEXT ---------------- */
+h1.main-text {
+  font-size: 3em;
+  font-weight: bold;
+  color: #c2185b;
+  margin-bottom: 40px;
+}
+
+/* ---------------- BUTTONS ---------------- */
+.buttons {
+  position: relative;
+}
+
+button {
+  font-size: 1.5em;
+  padding: 20px 50px;
+  border-radius: 40px;
+  border: none;
+  cursor: pointer;
+  margin: 10px;
+  transition: all 0.3s ease;
+}
+
+#yesBtn {
+  background: #ff4d88;
+  color: white;
+  box-shadow: 0 0 15px rgba(255,77,136,0.6);
+}
+
+#yesBtn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 25px rgba(255,77,136,0.9);
+}
+
+#noBtn {
+  background: white;
+  color: #ff4d88;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ---------------- HEARTS ---------------- */
+.heart {
+  position: fixed;
+  bottom: -20px;
+  font-size: 18px;
+  animation: floatUp 8s linear infinite;
+  opacity: 0.6;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity: 0; }
+  20% { opacity: 0.6; }
+  100% { transform: translateY(-110vh); opacity: 0; }
+}
+
+/* ---------------- FIREWORKS ---------------- */
+.firework {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: explode 2.5s forwards;
+}
+
+@keyframes explode {
+  0% { transform: translate(0,0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
+}
+
+/* ---------------- PHOTO PAGE ---------------- */
+.photo-container {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+.photo-container img {
+  width: 220px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Scene 3 text below photo */
+h2.sub-text {
+  font-size: 1.5em;
+  font-weight: normal;
+  color: #c2185b;
+  margin-top: 20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ---------------- SCENE 1 ---------------- -->
+<div id="page1" class="page active">
+  <h1 class="main-text">Fatima… will you be my Valentine?</h1>
+  <div class="buttons">
+    <button id="yesBtn" onclick="goYes()">Yes, I will</button>
+    <button id="noBtn" onclick="moveNo()">No</button>
+  </div>
+</div>
+
+<!-- ---------------- SCENE 3 ---------------- -->
+<div id="page2" class="page">
+  <h1 class="main-text">Yayyy! I knew you'd say yesss</h1>
+  <div class="photo-container">
+    <img src="photo1.jpg" alt="Photo 1">
+    <img src="photo2.jpg" alt="Photo 2">
+    <img src="photo3.jpg" alt="Photo 3">
+    <img src="photo4.jpg" alt="Photo 4">
+  </div>
+  <h2 class="sub-text">I can't wait to make memories with you.</h2>
+</div>
+
+<script>
+// ---------------- NO BUTTON ----------------
+const guiltTexts = [
+  "Wait, are you sure?",
+  "Really?",
+  "Try again!",
+  "Haha, nice try",
+  "No escape",
+  "You can't escape love",
+  "Still no?",
+  "Nope, not happening"
+];
+let guiltIndex = 0;
+
+function moveNo() {
+  const btn = document.getElementById("noBtn");
+  // Random position anywhere on screen
+  const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+  const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+  btn.style.left = x + "px";
+  btn.style.top = y + "px";
+  // Change button text
+  btn.innerText = guiltTexts[guiltIndex];
+  guiltIndex = (guiltIndex + 1) % guiltTexts.length;
+}
+
+// ---------------- YES BUTTON / FIREWORKS ----------------
+function fireWorkAnimation(callback) {
+  const colors = ['#ff4d88', '#ff85c1', '#ffe6f0', '#ff1a66'];
+  const count = 40;
+  for (let i = 0; i < count; i++) {
+    const fire = document.createElement('div');
+    fire.className = 'firework';
+    fire.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    const angle = Math.random() * 2 * Math.PI;
+    const distance = Math.random() * 400 + 50;
+    fire.style.setProperty('--x', `${Math.cos(angle)*distance}px`);
+    fire.style.setProperty('--y', `${Math.sin(angle)*distance}px`);
+    fire.style.left = `${Math.random()*100}vw`;
+    fire.style.top = `${Math.random()*100}vh`;
+    document.body.appendChild(fire);
+    setTimeout(() => fire.remove(), 2500);
+  }
+  setTimeout(callback, 2500);
+}
+
+function goYes() {
+  // Fade to black background
+  const fadeDiv = document.createElement('div');
+  fadeDiv.style.position = 'fixed';
+  fadeDiv.style.top = '0';
+  fadeDiv.style.left = '0';
+  fadeDiv.style.width = '100%';
+  fadeDiv.style.height = '100%';
+  fadeDiv.style.backgroundColor = 'black';
+  fadeDiv.style.zIndex = '999';
+  document.body.appendChild(fadeDiv);
+
+  fireWorkAnimation(() => {
+    // Remove fadeDiv
+    document.body.removeChild(fadeDiv);
+    // Switch pages
+    document.getElementById("page1").classList.remove("active");
+    document.getElementById("page2").classList.add("active");
+  });
+}
+
+// ---------------- FLOATING HEARTS ----------------
+setInterval(() => {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerText = "❤";
+  heart.style.fontSize = (10 + Math.random()*15) + "px";
+  heart.style.left = Math.random() * 100 + "vw";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 8000);
+}, 300);
+
+</script>
+</body>
+</html>
